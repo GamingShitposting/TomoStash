@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+html, body, iframe { width: 100%; height: 100%; margin: 0; padding: 0; overflow: hidden; border: none; background-color: white; }
+</style>
+</head>
+<body>
+<noscript>This application requires JavaScript.</noscript>
+<script>
+(function(data){
+    var page = data.page, extra = data.extra;
+    var ext = page.file.split('.').slice(-1)[0];
+    var readers = {
+        villain: extra.store + "/Villain-gh-pages/#/reader?src=",
+        // villain: "../Villain-gh-pages/#/reader?src=",
+        // villain: "https://villain.js.org/#/reader?src=",
+        foliate: extra.store + "/foliate-js-main/reader.html?url=",
+        // foliate: "../foliate-js-main/reader.html?url=",
+        // foliate: "https://johnfactotum.github.io/foliate-js/reader.html?url=",
+    };
+    var runtime = {
+        cbz: readers.villain,
+    }[ext] || readers.foliate;
+    document.body.innerHTML = '<iframe src="' + runtime + extra.store + '/tomes/' + page.slug + '/' + page.file + '" allow="fullscreen" allowfullscreen="allowfullscreen"></iframe>';
+    // if (runtime === readers.foliate) {
+    //     document.body.innerHTML += '<button style="position: absolute; top: 8px; right: 48px; font-size: large;" onclick="document.body.requestFullscreen();">↔</button>';
+    // }
+})(JSON.parse(decodeURIComponent(location.hash.slice(1))));
+</script>
+</body>
+</html>

@@ -7,7 +7,7 @@ description: "Pineapple-Certfied Online Digital Tomes Library"
 #twitter: "https://twitter.com/"
 github: "https://github.com/GamingShitposting/TomoStash"
 
-baseurl: "/pineapple"
+baseurl: "/TomoStash"
 highlighter: rouge
 layout: project
 sass:

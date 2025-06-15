@@ -1,0 +1,8 @@
+{% assign tome = include.tome %}
+{% capture tome-id %}{% include tome-id tome=tome %}{% endcapture %}
+{
+    "slug": {{ tome-id | jsonify }},
+    "folder": {{ tome.folder | jsonify }},
+    "file": {{ tome.file | jsonify }},
+    "chapters": {{ tome.chapters | jsonify }}
+}

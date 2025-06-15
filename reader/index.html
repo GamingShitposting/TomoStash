@@ -3,14 +3,16 @@
 <head>
 <style>
 html, body, iframe { width: 100%; height: 100%; margin: 0; padding: 0; overflow: hidden; border: none; background-color: white; }
+p { margin: 1em; }
 </style>
 </head>
 <body>
-<noscript>This application requires JavaScript.</noscript>
+<noscript><p>This application requires JavaScript.</p></noscript>
 <script>
 (function(data){
+    document.body.innerHTML = '';
     var page = data.page, extra = data.extra;
-    var ext = page.file.split('.').slice(-1)[0];
+
     var readers = {
         villain: extra.store + "/Villain-gh-pages/#/reader?src=",
         // villain: "../Villain-gh-pages/#/reader?src=",
@@ -19,13 +21,40 @@ html, body, iframe { width: 100%; height: 100%; margin: 0; padding: 0; overflow:
         // foliate: "../foliate-js-main/reader.html?url=",
         // foliate: "https://johnfactotum.github.io/foliate-js/reader.html?url=",
     };
-    var runtime = {
-        cbz: readers.villain,
-    }[ext] || readers.foliate;
-    document.body.innerHTML = '<iframe src="' + runtime + extra.store + '/tomes/' + page.slug + '/' + page.file + '" allow="fullscreen" allowfullscreen="allowfullscreen"></iframe>';
+
+    if (page.chapters) {
+        document.body.innerHTML +=
+            '<style>iframe{ height: calc(100% - 32px); }</style>' +
+            '<div style="height: 32px; background-color: darkgray; padding-left: 4px; padding-right: 4px;"><label><select style="margin: 4px;"></select></label></div>';
+    }
+    
+    document.body.innerHTML += '<iframe allow="fullscreen" allowfullscreen="allowfullscreen"></iframe>';
     // if (runtime === readers.foliate) {
     //     document.body.innerHTML += '<button style="position: absolute; top: 8px; right: 48px; font-size: large;" onclick="document.body.requestFullscreen();">↔</button>';
     // }
+
+    if (page.file) {
+        displayVolume(page.file);
+    } else if (page.chapters) {
+        var select = document.body.querySelector('select');
+        page.chapters.forEach(function(chapter){
+            select.appendChild(Object.assign(document.createElement('option'), { textContent: chapter }));
+        });
+        select.addEventListener('change', function(){
+            displayVolume(select.value);
+        });
+        displayVolume(select.value);
+    } else {
+        return document.body.innerHTML += '<p>No online reading available for this tome, please check downloads.</p>';
+    }
+
+    function displayVolume(file) {
+        var ext = file.split('.').slice(-1)[0];
+        var runtime = {
+            cbz: readers.villain,
+        }[ext] || readers.foliate;
+        document.querySelector('iframe').src = runtime + extra.store + '/tomes/' + page.slug + '/' + (page.folder ? page.folder + '/' : '') + file;
+    }
 })(JSON.parse(decodeURIComponent(location.hash.slice(1))));
 </script>
 </body>

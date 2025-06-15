@@ -1,6 +1,7 @@
 ---
 date: 2025-06-11
 year: 2022
+isbn: "9788804782971"
 title: "Dieci cose che ho imparato"
 authors: "Piero Angela"
 cover: "978880478297HIG-313x480.webp"

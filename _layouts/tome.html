@@ -1,21 +1,19 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ page.id | split: '/' | slice: 1 }}">
 <head>
 	<title>{{ page.title }} | {{ site.name }}</title>
 	<meta name="author" content="{{ site.name }}">
 	<meta name="description" content="{{ page.content | strip_html | strip_newlines }}">
 	<meta name="keywords" content="{{ page.keywords }}">
 	{% include head.html %}
-	<!-- {% capture cover %}{{ site.baseurl }}/assets/tomes/{{ page.slug }}/{{ page.cover }}{% endcapture %} -->
-	{% capture cover %}{{ site.extra.store }}/tomes/{{ page.slug }}/{{ page.cover }}{% endcapture %}
-	<!-- {% capture embed %}{ "page": {{ page.data | jsonify }}, "extra": {{ site.extra | jsonify }} }{% endcapture %} -->
+	{% capture id %}{% include tome-id tome=page %}{% endcapture %}
+	{% capture cover %}{{ site.extra.store }}/tomes/{{ id }}/{{ page.cover }}{% endcapture %}
+	{% capture tome_json %}{% include tome.json tome=page %}{% endcapture %}
 	{% capture embed %}{
-		"page": {
-			"slug": {{ page.slug | jsonify }},
-			"file": {{ page.file | jsonify }}
-		},
+		"page": {{ tome_json }},
 		"extra": {{ site.extra | jsonify }}
 	}{% endcapture %}
+	<script type="application/json" id="tome">{{ tome_json }}</script>
 </head>
 <body>
 	{% include header.html %}
@@ -25,17 +23,29 @@
 				<article>
 					<span class="h2">Title</span>
 					<h1>{{ page.title }}</h1>
+					<p>{{ page.subtitle }}</p>
+
 					<span class="h2">Cover</span>
-					<!-- <img src="{{ page.cover | prepend: site.baseurl }}" alt="Cover" style="max-height: 40vh; width: auto;" /> -->
 					<img src="{{ cover }}" alt="Cover" style="max-height: 40vh; width: auto;" />
+
 					<span class="h2">About</span>
 					{{ page.content }}
+
 					<span class="h2">Authors</span>
 					<p>{{ page.authors }}</p>
+
 					<span class="h2">Year</span>
 					<p>{{ page.year }}</p>
+
+					{% if page.isbn %}
+					<span class="h2">ISBN</span>
+					<p>{{ page.isbn }}</p>
+					{% endif %}
+
+					{% if page.webpage %}
 					<span class="h2">Webpage</span>
 					<a href="{{ page.webpage }}" target="_blank">{{ page.webpage }}</a>
+					{% endif %}
 				</article>
 				<aside>
 					<ul>
@@ -45,7 +55,6 @@
 									allow="fullscreen" allowfullscreen="allowfullscreen"></iframe>
 						</li>
 						<li>
-							<!-- <img src="{{ page.cover | prepend: site.baseurl }}" alt="Cover" /> -->
 							<img src="{{ cover }}" alt="Cover" />
 						</li>
 					</ul>
@@ -54,15 +63,24 @@
 		</section>
 	</main>
 	{% include footer.html %}
-	<script src="{{ "/assets/scripts/vendor/jquery-1.12.4.min.js" | prepend: site.baseurl }}"></script>
-	<script src="{{ "/assets/scripts/vendor/scrollreveal.min.js" | prepend: site.baseurl }}"></script>
-	<script src="{{ "/assets/scripts/vendor/sticky-kit.min.js" | prepend: site.baseurl }}"></script>
-	<script src="{{ "/assets/scripts/project.js" | prepend: site.baseurl }}"></script>
+	<script src="{{ '/assets/scripts/vendor/jquery-1.12.4.min.js' | prepend: site.baseurl }}"></script>
+	<script src="{{ '/assets/scripts/vendor/scrollreveal.min.js' | prepend: site.baseurl }}"></script>
+	<script src="{{ '/assets/scripts/vendor/sticky-kit.min.js' | prepend: site.baseurl }}"></script>
+	<script src="{{ '/assets/scripts/project.js' | prepend: site.baseurl }}"></script>
 	<script>
-		document.querySelector('article').innerHTML += '<span class="h2">Download</span><button>{{ page.file }}</button>';
+		{% if page.file %}
+		document.querySelector('article').innerHTML += '<span class="h2">Download tome</span><ul><li><button>{{ page.file }}</button></li></ul>';
 		document.querySelector('article button').addEventListener('click', function(){
-			location.href = '{{ site.extra.store }}/tomes/{{ page.slug }}/{{ page.file }}';
+			location.href = '{{ site.extra.store }}/tomes/{{ id }}/{% if page.folder %}{{ page.folder }}/{% endif %}{{ page.file }}';
 		});
+		{% else if page.chapters %}
+		document.querySelector('article').innerHTML += '<span class="h2">Download chapters</span><ul>{% for chapter in page.chapters %}<li><button>{{ chapter }}</button></li>{% endfor %}</ul>';
+		document.querySelectorAll('article button').forEach(function(button){
+			button.addEventListener('click', function(){
+				location.href = '{{ site.extra.store }}/tomes/{{ id }}/{{ page.folder }}/' + button.textContent;
+			});
+		});
+		{% endif %}
 	</script>
 </body>
 </html>

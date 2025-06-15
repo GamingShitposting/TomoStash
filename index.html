@@ -7,6 +7,7 @@
 	<meta name="author" content="{{ site.name }}">
 	<meta name="description" content="{{ site.description }}">
 	<meta name="keywords" content="{{ site.keywords }}">
+	<script type="application/json" id="tomes" src="{{ '/tomes.json' | prepend: site.baseurl }}"></script>
 	{% include head.html %}
 </head>
 <body>
@@ -23,19 +24,18 @@
 				<h2>Available tomes</h2>
 				<ul class="projects-list">
 					{% assign doclist = site.tomes | sort: 'date' | reverse %}
-					{% for item in doclist %}
-						<li>
-							<a href="{{ item.url | prepend: site.baseurl }}">
-								<div class="img-wrapper">
-									<!-- <img src="{{ item.cover | prepend: site.baseurl }}" alt="{{ item.title }}" /> -->
-									<!-- <img src="{{ item.url | prepend: site.baseurl }}/../{{ item.cover }}" alt="{{ item.title }}" /> -->
-									<!-- <img src="{{ site.baseurl }}/assets/tomes/{{ item.slug }}/{{ item.cover }}" alt="{{ item.title }}" /> -->
-									<img src="{{ site.extra.store }}/tomes/{{ item.slug }}/{{ item.cover }}" alt="{{ item.title }}" />
-								</div>
-								<span class="h2">{{ item.type }}</span>
-								<h3>{{ item.title }}</h3>
-							</a>
-						</li>
+					{% for tome in doclist %}
+					{% if tome.draft != true %}
+					<li>
+						<a href="{{ tome.url | prepend: site.baseurl }}">
+							<div class="img-wrapper">
+								<img src="{{ site.extra.store }}/tomes/{% include tome-id tome=tome %}/{{ tome.cover }}" alt="{{ tome.title }}" />
+							</div>
+							<span class="h2">{{ tome.type }}</span>
+							<h3>{{ tome.title }}</h3>
+						</a>
+					</li>
+					{% endif %}
 					{% endfor %}
 				</ul>
 			</div>

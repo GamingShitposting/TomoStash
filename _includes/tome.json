@@ -1,8 +1,15 @@
-{% assign tome = include.tome %}
-{% capture tome-id %}{% include tome-id tome=tome %}{% endcapture %}
+{%- assign tome = include.tome -%}
+{%- capture tome-id %}{% include tome-id tome=tome %}{% endcapture -%}
+{%- capture tome-lang %}{% include tome-lang tome=tome %}{% endcapture -%}
+{%- capture tome-title %}{% include tome-field tome=tome field='title' %}{% endcapture -%}
+{%- capture tome-folder %}{% include tome-field tome=tome field='folder' %}{% endcapture -%}
 {
-    "slug": {{ tome-id | jsonify }},
-    "folder": {{ tome.folder | jsonify }},
+    {%- if include.full == true %}
+    "title": {{ tome-title | jsonify }},
+    "folder": {{ tome-folder | jsonify }},
     "file": {{ tome.file | jsonify }},
-    "chapters": {{ tome.chapters | jsonify }}
+    "chapters": {{ tome.chapters | jsonify }},
+    {%- endif %}
+    "locale": {{ tome-lang | jsonify }},
+    "slug": {{ tome-id | jsonify }}
 }

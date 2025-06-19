@@ -1,5 +1,5 @@
 ---
-title: "I manga delle scienze — Analisi matematica (Vol. 2)"
+title: "Matematica: Analisi (Vol. 2)"
 authors: "Hiroyuki Kojima, Shin Togami"
 isbn: "9788883715914, 8883715918"
 gbooks: "VXGLtAEACAAJ"

@@ -1,8 +1,14 @@
 ---
 ---
 [
-    {%- for tome in site.tomes %}
-        {% include tome.json tome=page %}
+    {%- for tome in site.tomes -%}
+        {%- capture tome-id -%}
+            {%- include tome-id tome=tome -%}
+        {%- endcapture -%}
+        {%- assign parts = tome-id | split: '/' -%}
+        {%- if parts[1] != 'index' -%}
+            {% include tome.json %}
         {%- unless forloop.last %},{% endunless -%}
-    {% endfor %}
+        {%- endif -%}
+    {%- endfor -%}
 ]

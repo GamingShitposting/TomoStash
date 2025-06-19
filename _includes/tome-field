@@ -1,0 +1,20 @@
+{%- assign key = include.field -%}
+{%- assign tome = include.tome -%}
+
+{%- assign this-field = tome[key] | strip -%}
+
+{%- capture parent-field -%}
+    {%- include tome-parent tome=tome key=key -%}
+{%- endcapture -%}
+
+{%- if parent-field == '' -%}
+    {{- this-field -}}
+{%- elsif key == 'title' -%}
+    {{- parent-field }} — {{ this-field -}}
+{%- else -%}
+    {%- if this-field != '' -%}
+        {{- this-field -}}
+    {%- else -%}
+        {{- parent-field -}}
+    {%- endif -%}
+{%- endif -%}

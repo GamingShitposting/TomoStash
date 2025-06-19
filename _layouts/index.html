@@ -9,27 +9,61 @@
 	<meta name="keywords" content="{{ site.keywords }}">
 	<script type="application/json" id="tomes" src="{{ '/tomes.json' | prepend: site.baseurl }}"></script>
 	{% include head.html %}
+	{%- capture this-id -%}
+		{%- include tome-id tome=page -%}
+	{%- endcapture -%}
+	{%- assign this-id = this-id | split: '/' | first | strip -%}
 </head>
 <body>
 	{% include header.html %}
 	<main class="content">
 		<section class="intro">
 			<div class="container">
+				{% if this-id == '' %}
 				<h2>About site</h2>
-				<p>{{ site.description }}</p>
+				<p class="main">{{ site.description }}</p>
+				{% endif %}
+
+				{% assign content = page.content | strip %}
+				{% if this-id != '' %}
+				<span class="h2">Collection</span>
+				<h1>{{ page.title }}</h1>
+				<p>{{ page.subtitle }}</p>
+
+				{% if content != '' %}
+				<h2>About collection</h2>
+				<p>{{ page.content }}</p>
+				{% endif %}
+
+				{% include tome-info.html %}
+				{% endif %}
 			</div>
 		</section>
 		<section class="projects">
 			<div class="container">
 				<h2>Available tomes</h2>
 				<ul class="projects-list">
-					{% assign doclist = site.tomes | sort: 'date' | reverse %}
-					{% for tome in doclist %}
-					{% if tome.draft != true %}
+					{%- assign doclist = site.tomes | sort: 'date' | reverse -%}
+					{%- for tome in doclist -%}
+
+					{%- capture parent-id -%}
+						{%- include tome-parent tome=tome -%}
+					{%- endcapture -%}
+					{%- assign parent-id = parent-id | strip -%}
+
+					{% if tome.draft != true and parent-id == this-id %}
 					<li>
 						<a href="{{ tome.url | prepend: site.baseurl }}">
 							<div class="img-wrapper">
-								<img src="{{ site.extra.store }}/tomes/{% include tome-id tome=tome %}/{{ tome.cover }}" alt="{{ tome.title }}" />
+								{% capture tome-id %}{% include tome-id tome=tome %}{% endcapture %}
+								{%- assign parts = tome-id | split: '/' -%}
+								{%- assign cover2 = tome.cover2 | strip -%}
+								{%- if parts[1] == 'index' and cover2 != '' -%}
+								<img src="{%- include tome-cover -%}/{{ parts[0] }}/{{ tome.cover }}" style="clip-path: polygon(0 0, 100% 0, 0 100%);" />
+								<img src="{%- include tome-cover -%}/{{ parts[0] }}/{{ cover2 }}" style="clip-path: polygon(100% 100%, 100% 0, 0 100%); position: absolute; top: 0; left: 0;" />
+								{% else %}
+								<img src="{%- include tome-cover tome=page -%}" alt="{{ tome.title }}" />
+								{% endif %}
 							</div>
 							<span class="h2">{{ tome.type }}</span>
 							<h3>{{ tome.title }}</h3>
@@ -42,7 +76,7 @@
 		</section>
 	</main>
 	{% include footer.html %}
-	<script src="{{ "/assets/scripts/vendor/scrollreveal.min.js" | prepend: site.baseurl }}"></script>
-	<script src="{{ "/assets/scripts/home.js" | prepend: site.baseurl }}"></script>
+	<script src="{{ '/assets/scripts/vendor/scrollreveal.min.js' | prepend: site.baseurl }}"></script>
+	<script src="{{ '/assets/scripts/home.js' | prepend: site.baseurl }}"></script>
 </body>
 </html>

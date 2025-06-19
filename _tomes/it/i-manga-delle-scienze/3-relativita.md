@@ -1,5 +1,5 @@
 ---
-title: "I manga delle scienze — Relatività (Vol. 3)"
+title: "Relatività (Vol. 3)"
 authors: "Hideo Nitta, Masafumi Yamamoto, Keita Takatsu"
 isbn: "9788883715907, 888371590X"
 gbooks: "UCdKAQAACAAJ"

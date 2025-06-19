@@ -1,5 +1,5 @@
 ---
-title: "I manga delle scienze — Fisica (Vol. 1)"
+title: "Fisica (Vol. 1)"
 authors: "Hideo Nitta, Keita Takatsu"
 isbn: "9788883716089, 8883716086"
 gbooks: "EZ-IAQAACAAJ"

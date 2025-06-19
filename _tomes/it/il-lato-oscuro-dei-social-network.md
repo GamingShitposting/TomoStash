@@ -7,6 +7,7 @@ subtitle: "Come la rete ci controlla e manipola"
 authors: "Serena Mazzini"
 cover: "978881719045GRA.webp"
 file: "annas-arch-0fa4973ebc2b.epub"
+files_alt: [ "annas-arch-7a2bc5a931e8.pdf" ]
 webpage: "https://www.rizzolilibri.it/libri/il-lato-oscuro-dei-social-network/"
 ---
 

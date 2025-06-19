@@ -1,5 +1,5 @@
 ---
-title: "I manga delle scienze — Biologia: DNA e genetica (Vol. 4)"
+title: "Biologia: DNA e genetica (Vol. 4)"
 authors: "Masaharu Takemura"
 isbn: "9788883715891, 8883715896"
 gbooks: "SAhonQAACAAJ"

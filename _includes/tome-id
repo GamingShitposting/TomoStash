@@ -1,1 +1,1 @@
-{{ include.tome.id | split: '/' | slice: 2,3 | join: '/' }}
+{{- include.tome.path | split: '.' | slice: -2 | join: '.' | split: '/' | slice: 2,3 | join: '/' -}}

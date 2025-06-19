@@ -53,7 +53,7 @@ p { margin: 1em; }
         var runtime = {
             cbz: readers.villain,
         }[ext] || readers.foliate;
-        document.querySelector('iframe').src = runtime + extra.store + '/tomes/' + page.slug + '/' + (page.folder ? page.folder + '/' : '') + file;
+        document.querySelector('iframe').src = runtime + extra.store + '/tomes/' + (page.folder ? page.slug.split('/')[0] : page.slug) + '/' + (page.folder ? page.folder + '/' : '') + file;
     }
 })(JSON.parse(decodeURIComponent(location.hash.slice(1))));
 </script>

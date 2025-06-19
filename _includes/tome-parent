@@ -1,0 +1,20 @@
+{%- capture tome-id -%}
+    {%- include tome-id tome=include.tome -%}
+{%- endcapture -%}
+{%- assign id-parts = tome-id | split: '/' -%}
+{%- assign key = include.key | strip -%}
+{%- if id-parts.size == 2 and id-parts[1] != 'index' -%}
+    {%- if key != '' -%}
+        {%- for tome in site.tomes -%}
+            {%- capture parent-id -%}
+                {%- include tome-id tome=tome -%}
+            {%- endcapture -%}
+            {%- assign parents-parts = parent-id | strip | tome-id | split: '/' -%}
+            {%- if parents-parts[1] == 'index' and parents-parts[0] == id-parts[0] -%}
+                {{- tome[include.key] -}}
+            {%- endif -%}
+        {%- endfor -%}
+    {%- else -%}
+        {{- id-parts[0] -}}
+    {%- endif -%}
+{%- endif -%}

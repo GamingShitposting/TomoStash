@@ -6,6 +6,7 @@ title: "Welcome to the N.H.K."
 authors: "Tatsuhiko Takimoto"
 cover: "cover-jpop.jpg"
 file: "annas-arch-5803f97cf06f.epub"
+files_alt: [ "annas-arch-d90f14d798f1.pdf" ]
 webpage: "https://j-pop.it/it/catalog/product/view/id/31393/s/welcome-to-the-n-h-k/category/785/"
 ---
 

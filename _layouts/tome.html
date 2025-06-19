@@ -1,15 +1,17 @@
 <!DOCTYPE html>
-<html lang="{{ page.id | split: '/' | slice: 1 }}">
+<html lang="{% include tome-lang tome=page %}">
 <head>
-	{% capture id %}{% include tome-id tome=page %}{% endcapture %}
-	{% capture cover %}{{ site.extra.store }}/tomes/{{ id }}/{{ page.cover }}{% endcapture %}
-	<title>{{ page.title }} | {{ site.name }}</title>
+	{%- capture id %}{% include tome-id tome=page %}{%- endcapture -%}
+	{%- capture title %}{% include tome-field tome=page field='title' %}{%- endcapture -%}
+	{%- capture folder %}{% include tome-field tome=page field='folder' %}{%- endcapture -%}
+	{%- capture cover %}{% include tome-cover tome=page %}{%- endcapture -%}
+	<title>{{ title }} | {{ site.name }}</title>
 	<meta name="author" content="{{ site.name }}">
 	<meta name="description" content="{{ page.content | strip_html | strip_newlines }}">
 	<meta name="keywords" content="{{ page.keywords }}">
 	<meta property="og:image" content="{{ cover }}">
 	{% include head.html %}
-	{% capture tome_json %}{% include tome.json tome=page %}{% endcapture %}
+	{% capture tome_json %}{% include tome.json tome=page full=true %}{% endcapture %}
 	{% capture embed %}{
 		"page": {{ tome_json }},
 		"extra": {{ site.extra | jsonify }}
@@ -22,25 +24,20 @@
 		<section class="project">
 			<div class="container">
 				<article>
-					<span class="h2">Title</span>
-					<h1>{{ page.title }}</h1>
+					<span class="h2">Tome</span>
+					<h1>{{ title }}</h1>
 					<p>{{ page.subtitle }}</p>
 
 					<span class="h2">Cover</span>
 					<img src="{{ cover }}" alt="Cover" style="max-height: 40vh; width: auto;" />
 
+					{% assign content = page.content | strip %}
+					{% if content != '' %}
 					<span class="h2">About</span>
 					{{ page.content }}
-
-					{% if page.authors %}
-					<span class="h2">Authors</span>
-					<p>{{ page.authors }}</p>
 					{% endif %}
 
-					{% if page.year or page.date %}
-					<span class="h2">Date</span>
-					<p>{{ page.year }} / {{ page.date | split: ' ' | first }}</p>
-					{% endif %}
+					{% include tome-info.html %}
 
 					{% if page.isbn %}
 					<span class="h2">ISBN</span>
@@ -49,12 +46,7 @@
 
 					{% if page.gbooks %}
 					<span class="h2">Google Books</span>
-					<a href="https://books.google.it/books?id={{ page.gbooks }}" target="_blank">{{ page.gbooks }}</a>
-					{% endif %}
-
-					{% if page.webpage %}
-					<span class="h2">Webpage</span>
-					<a href="{{ page.webpage }}" target="_blank">{{ page.webpage }}</a>
+					<a href="https://books.google.com/books?id={{ page.gbooks }}" target="_blank">{{ page.gbooks }}</a>
 					{% endif %}
 				</article>
 				<aside>
@@ -81,13 +73,13 @@
 		{% if page.file %}
 		document.querySelector('article').innerHTML += '<span class="h2">Download tome</span><ul><li><button>{{ page.file }}</button></li></ul>';
 		document.querySelector('article button').addEventListener('click', function(){
-			location.href = '{{ site.extra.store }}/tomes/{{ id }}/{% if page.folder %}{{ page.folder }}/{% endif %}{{ page.file }}';
+			location.href = '{{ site.extra.store }}/tomes/{% if folder != "" %}{{ id | split: "/" | first }}{% else %}{{ id }}{% endif %}/{% if folder != "" %}{{ folder }}/{% endif %}{{ page.file }}';
 		});
 		{% else if page.chapters %}
 		document.querySelector('article').innerHTML += '<span class="h2">Download chapters</span><ul>{% for chapter in page.chapters %}<li><button>{{ chapter }}</button></li>{% endfor %}</ul>';
 		document.querySelectorAll('article button').forEach(function(button){
 			button.addEventListener('click', function(){
-				location.href = '{{ site.extra.store }}/tomes/{{ id }}/{{ page.folder }}/' + button.textContent;
+				location.href = '{{ site.extra.store }}/tomes/{{ id }}/{{ folder }}/' + button.textContent;
 			});
 		});
 		{% endif %}

@@ -1,0 +1,22 @@
+{% capture authors %}{% include tome-field tome=page field='authors' %}{% endcapture %}
+{% if authors != '' %}
+<span class="h2">Authors</span>
+<p>{{ authors }}</p>
+{% endif %}
+
+{% capture publisher %}{% include tome-field tome=page field='publisher' %}{% endcapture %}
+{% if publisher != '' %}
+{% capture publisher_query %}inpublisher:"{{ publisher }}"{% endcapture %}
+<span class="h2">Publisher</span>
+<a href="https://www.google.com/search?q={{ publisher_query | uri_escape }}&tbm=bks" target="_blank">{{ publisher }}</a>
+{% endif %}
+
+{% if page.year or page.date %}
+<span class="h2">Date</span>
+<p>{{ page.year }} / {{ page.date | split: ' ' | first }}</p>
+{% endif %}
+
+{% if page.webpage %}
+<span class="h2">Webpage</span>
+<a href="{{ page.webpage }}" target="_blank">{{ page.webpage }}</a>
+{% endif %}

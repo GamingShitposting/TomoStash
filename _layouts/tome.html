@@ -7,7 +7,7 @@
 	<meta name="author" content="{{ site.name }}">
 	<meta name="description" content="{{ page.content | strip_html | strip_newlines }}">
 	<meta name="keywords" content="{{ page.keywords }}">
-	<meta property="og:image" content="https://i.pinimg.com/736x/0d/e3/75/0de375e52121ef54f261e28df0054442.jpg">
+	<meta property="og:image" content="{{ cover }}">
 	{% include head.html %}
 	{% capture tome_json %}{% include tome.json tome=page %}{% endcapture %}
 	{% capture embed %}{

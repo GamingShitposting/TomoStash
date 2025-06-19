@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html lang="{{ page.id | split: '/' | slice: 1 }}">
 <head>
+	{% capture id %}{% include tome-id tome=page %}{% endcapture %}
+	{% capture cover %}{{ site.extra.store }}/tomes/{{ id }}/{{ page.cover }}{% endcapture %}
 	<title>{{ page.title }} | {{ site.name }}</title>
 	<meta name="author" content="{{ site.name }}">
 	<meta name="description" content="{{ page.content | strip_html | strip_newlines }}">
 	<meta name="keywords" content="{{ page.keywords }}">
+	<meta property="og:image" content="https://i.pinimg.com/736x/0d/e3/75/0de375e52121ef54f261e28df0054442.jpg">
 	{% include head.html %}
-	{% capture id %}{% include tome-id tome=page %}{% endcapture %}
-	{% capture cover %}{{ site.extra.store }}/tomes/{{ id }}/{{ page.cover }}{% endcapture %}
 	{% capture tome_json %}{% include tome.json tome=page %}{% endcapture %}
 	{% capture embed %}{
 		"page": {{ tome_json }},
@@ -31,15 +32,24 @@
 					<span class="h2">About</span>
 					{{ page.content }}
 
+					{% if page.authors %}
 					<span class="h2">Authors</span>
 					<p>{{ page.authors }}</p>
+					{% endif %}
 
-					<span class="h2">Year</span>
-					<p>{{ page.year }}</p>
+					{% if page.year or page.date %}
+					<span class="h2">Date</span>
+					<p>{{ page.year }} / {{ page.date | split: ' ' | first }}</p>
+					{% endif %}
 
 					{% if page.isbn %}
 					<span class="h2">ISBN</span>
-					<p>{{ page.isbn }}</p>
+					<a href="https://isbndb.com/search/books/{{ page.isbn }}" target="_blank">{{ page.isbn }}</a>
+					{% endif %}
+
+					{% if page.gbooks %}
+					<span class="h2">Google Books</span>
+					<a href="https://books.google.it/books?id={{ page.gbooks }}" target="_blank">{{ page.gbooks }}</a>
 					{% endif %}
 
 					{% if page.webpage %}

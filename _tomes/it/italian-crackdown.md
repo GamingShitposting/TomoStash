@@ -2,6 +2,7 @@
 date: 2025-06-15
 year: 1999
 isbn: "9788850318568"
+gbooks: "m6PfiYMvIZkC"
 title: "Italian crackdown"
 authors: "Carlo Gubitosa"
 cover: "italian-crackdown-cover.jpg"

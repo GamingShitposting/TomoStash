@@ -35,6 +35,7 @@
 	top: 0;
 	left: 0;
 	z-index: 1;
+	word-break: break-word;
 
 	@media (min-width: $breakpoint-medium) {
 		padding: 21rem 0 0;
@@ -60,10 +61,8 @@
 	display: flex;
 	flex-wrap: wrap;
 
-	@media (min-width: $breakpoint-xsmall) {
-		li {
-			width: 100%;
-		}
+	li {
+		width: 100%;
 	}
 
 	@media (min-width: $breakpoint-small) {

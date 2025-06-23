@@ -1,9 +1,9 @@
-{%- capture prefix -%}{{ site.extra.store }}/tomes/{%- endcapture -%}
+{%- capture prefix -%}{{ site.extra.store }}/tomes{%- endcapture -%}
 {%- if include.tome -%}
 {%- assign tome = include.tome -%}
 {%- capture id %}{%- include tome-id tome=tome -%}{%- endcapture -%}
 {%- capture folder %}{%- include tome-field tome=tome field='folder' -%}{%- endcapture -%}
-{{ site.extra.store }}/tomes/{% if folder != '' %}{{ id | split: '/' | first }}{% else %}{{ id }}{% endif %}/{{ tome.cover }}
+{{ prefix }}/{% if folder != '' %}{{ id | split: '/' | first }}{% else %}{{ id }}{% endif %}/{{ tome.cover }}
 {%- else -%}
 {{ prefix }}
 {%- endif -%}

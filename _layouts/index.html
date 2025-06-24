@@ -7,6 +7,10 @@
 		{%- include tome-id tome=page -%}
 	{%- endcapture -%}
 	{%- assign this-id = this-id | split: '/' | first | strip -%}
+	{%- capture is-page -%}
+		{%- assign tokens = page.path | split: '/' -%}
+		{%- if tokens.size == 1 and page.path != 'index.html' -%}true{%- else -%}false{%- endif -%}
+	{%- endcapture -%}
 	{% if this-id == '' %}
 	<title>{{ site.name }} | {{ site.tagline }}</title>
 	<meta name="description" content="{{ site.description }}">
@@ -24,6 +28,7 @@
 	<main class="content">
 		<section class="intro">
 			<div class="container">
+				{%- if is-page == 'false' -%}
 				{% if this-id == '' %}
 				<h2>About site</h2>
 				<p class="main">{{ site.description }}</p>
@@ -42,8 +47,14 @@
 
 				{% include tome-info.html %}
 				{% endif %}
+				{% else %}
+				<h1>{{ page.title }}</h1>
+				<br />
+				{{ page.content | markdownify }}
+				{% endif %}
 			</div>
 		</section>
+		{%- if is-page == 'false' -%}
 		<section class="projects">
 			<div class="container">
 				<h2>Available tomes</h2>
@@ -81,6 +92,7 @@
 				</ul>
 			</div>
 		</section>
+		{% endif %}
 	</main>
 	{% include footer.html %}
 	<script src="{{ '/assets/scripts/vendor/scrollreveal.min.js' | prepend: site.baseurl }}"></script>

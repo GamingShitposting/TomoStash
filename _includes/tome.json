@@ -9,7 +9,10 @@
     "folder": {{ tome-folder | jsonify }},
     "file": {{ tome.file | jsonify }},
     "chapters": {{ tome.chapters | jsonify }},
+    "config": {{ site.extra | jsonify }},
     {%- endif %}
     "locale": {{ tome-lang | jsonify }},
-    "slug": {{ tome-id | jsonify }}
+    "slug": {{ tome-id | jsonify }},
+    "isbn": {{ tome.isbn | jsonify }},
+    "gbooks": {{ tome.gbooks | jsonify }}
 }

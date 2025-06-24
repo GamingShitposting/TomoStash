@@ -1,5 +1,5 @@
 ---
-title: "Matematica: Algebra lineare"
+title: "Matematica: Algebra lineare (Vol. 10)"
 authors: "Shin Takahashi, Iroha Inoue"
 date: 2016-12-02
 isbn: "8883715756, 9788883715754"

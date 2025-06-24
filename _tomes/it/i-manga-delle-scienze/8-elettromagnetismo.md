@@ -1,5 +1,5 @@
 ---
-title: "Elettromagnetismo"
+title: "Elettromagnetismo (Vol. 8)"
 authors: "Kazuhiro Fujitaki"
 publisher: "Gedi (Gruppo Editoriale)"
 date: 2016-11-18

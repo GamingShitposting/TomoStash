@@ -1,5 +1,5 @@
 ---
-title: "Anatomia"
+title: "Anatomia (Vol. 12)"
 authors: "Etsuro Tanaka, Keiko Koyama"
 date: 2016-12-16
 isbn: "888371573X, 9788883715730"

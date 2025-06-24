@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="{% include tome-lang tome=page %}">
 <head>
-	{%- capture id %}{% include tome-id tome=page %}{%- endcapture -%}
+	{%- capture this-id %}{% include tome-id tome=page %}{%- endcapture -%}
+	{%- capture parent -%}{%- include tome-parent tome=page key='title' -%}{%- endcapture -%}
 	{%- capture title %}{% include tome-field tome=page field='title' %}{%- endcapture -%}
-	{%- capture folder %}{% include tome-field tome=page field='folder' %}{%- endcapture -%}
 	{%- capture cover %}{% include tome-cover tome=page %}{%- endcapture -%}
 	<title>{{ title }} | {{ site.name }}</title>
 	<meta name="author" content="{{ site.name }}">
@@ -11,12 +11,7 @@
 	<meta name="keywords" content="{{ page.keywords }}">
 	<meta property="og:image" content="{{ cover }}">
 	{% include head.html %}
-	{% capture tome_json %}{% include tome.json tome=page full=true %}{% endcapture %}
-	{% capture embed %}{
-		"page": {{ tome_json }},
-		"extra": {{ site.extra | jsonify }}
-	}{% endcapture %}
-	<script type="application/json" id="tome">{{ tome_json }}</script>
+	<script type="application/json" id="tome">{% include tome.json tome=page full=true %}</script>
 </head>
 <body>
 	{% include header.html %}
@@ -27,6 +22,11 @@
 					<span class="h2">Tome</span>
 					<h1>{{ title }}</h1>
 					<p>{{ page.subtitle }}</p>
+
+					{% if parent != '' %}
+					<span class="h2">Part of</span>
+					<a href="..">{{ parent }}</a>
+					{% endif %}
 
 					<span class="h2">Cover</span>
 					<img src="{{ cover }}" alt="Cover" style="max-height: 40vh; width: auto;" />
@@ -52,11 +52,6 @@
 				<aside>
 					<ul>
 						<li>
-							<iframe src="{{ '/reader/' | prepend: site.baseurl }}#{{ embed | uri_escape | xml_escape }}"
-									style="width: 100%; height: 90vh; border: none;"
-									allow="fullscreen" allowfullscreen="allowfullscreen"></iframe>
-						</li>
-						<li>
 							<img src="{{ cover }}" alt="Cover" />
 						</li>
 					</ul>
@@ -69,20 +64,6 @@
 	<script src="{{ '/assets/scripts/vendor/scrollreveal.min.js' | prepend: site.baseurl }}"></script>
 	<script src="{{ '/assets/scripts/vendor/sticky-kit.min.js' | prepend: site.baseurl }}"></script>
 	<script src="{{ '/assets/scripts/project.js' | prepend: site.baseurl }}"></script>
-	<script>
-		{% if page.file %}
-		document.querySelector('article').innerHTML += '<span class="h2">Download tome</span><ul><li><button>{{ page.file }}</button></li></ul>';
-		document.querySelector('article button').addEventListener('click', function(){
-			location.href = '{{ site.extra.store }}/tomes/{% if folder != "" %}{{ id | split: "/" | first }}{% else %}{{ id }}{% endif %}/{% if folder != "" %}{{ folder }}/{% endif %}{{ page.file }}';
-		});
-		{% else if page.chapters %}
-		document.querySelector('article').innerHTML += '<span class="h2">Download chapters</span><ul>{% for chapter in page.chapters %}<li><button>{{ chapter }}</button></li>{% endfor %}</ul>';
-		document.querySelectorAll('article button').forEach(function(button){
-			button.addEventListener('click', function(){
-				location.href = '{{ site.extra.store }}/tomes/{{ id }}/{{ folder }}/' + button.textContent;
-			});
-		});
-		{% endif %}
-	</script>
+	<script src="{{ '/reader/autoload.js' | prepend: site.baseurl }}"></script>
 </body>
 </html>

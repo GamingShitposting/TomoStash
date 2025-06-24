@@ -1,5 +1,5 @@
 ---
-title: "Regressione: Analisi statistica dei dati"
+title: "Regressione: Analisi statistica dei dati (Vol. 11)"
 authors: "Shin Takahashi"
 date: 2016-12-09
 isbn: "8883715748, 9788883715747"

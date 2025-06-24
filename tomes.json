@@ -1,14 +1,16 @@
 ---
 ---
 [
+    {%- assign first = true -%}
     {%- for tome in site.tomes -%}
         {%- capture tome-id -%}
             {%- include tome-id tome=tome -%}
         {%- endcapture -%}
         {%- assign parts = tome-id | split: '/' -%}
         {%- if parts[1] != 'index' -%}
+            {%- unless first -%},{%- endunless -%}
+            {%- assign first = false -%}
             {% include tome.json %}
-        {%- unless forloop.last %},{% endunless -%}
         {%- endif -%}
     {%- endfor -%}
 ]

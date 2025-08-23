@@ -48,6 +48,11 @@
 					<span class="h2">Google Books</span>
 					<a href="https://books.google.com/books?id={{ page.gbooks }}" target="_blank">{{ page.gbooks }}</a>
 					{% endif %}
+
+					{% if page.goodreads %}
+					<span class="h2">Goodreads</span>
+					<a href="https://goodreads.com/book/show/{{ page.goodreads }}" target="_blank">{{ page.goodreads }}</a>
+					{% endif %}
 				</article>
 				<aside>
 					<ul>

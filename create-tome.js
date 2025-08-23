@@ -32,6 +32,8 @@ ${data.volumeInfo.description}`;
 if (process.argv.length == 3) {
     const data = await query(process.argv[2]);
     console.log(tome(data));
+} else {
+    console.log(`Usage: ${__filename.replaceAll('\\', '/').split('/').slice(-1)[0]} <Google Books ID>`);
 }
 
 })();

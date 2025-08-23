@@ -4,6 +4,7 @@ webpage: "https://gigaciao.com/collections/scottecs-gigazine/products/scottecs-g
 file: "annas-arch-77613f8b2ea8.pdf"
 cover: "2.jpg"
 date: "2023-08-02"
+goodreads: 195024492-scottecs-gigazine-vol-2
 ---
 
 In questo numero abbiamo voluto omaggiare l'eroe spaziale dello spazio più forte che sia mai esisto (nello spazio): BRUCO GIANLUCO!

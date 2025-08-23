@@ -20,3 +20,6 @@
 <span class="h2">Webpage</span>
 <a href="{{ page.webpage }}" target="_blank">{{ page.webpage }}</a>
 {% endif %}
+
+<span class="h2">Wikipedia</span>
+<a href="https://wikipedia.org/w/index.php?fulltext=1&search={% include tome-field tome=page field='title' %}" target="_blank">Search on Wikipedia</a>

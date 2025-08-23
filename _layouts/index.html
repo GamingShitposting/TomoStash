@@ -46,6 +46,12 @@
 				{% endif %}
 
 				{% include tome-info.html %}
+
+				{% if page.goodreads %}
+				<span class="h2">Goodreads</span>
+				<a href="https://goodreads.com/series/{{ page.goodreads }}" target="_blank">{{ page.goodreads }}</a>
+				{% endif %}
+
 				{% endif %}
 				{% else %}
 				<h1>{{ page.title }}</h1>

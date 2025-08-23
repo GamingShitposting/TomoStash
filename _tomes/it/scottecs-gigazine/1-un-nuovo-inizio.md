@@ -4,6 +4,7 @@ webpage: "https://gigaciao.com/collections/scottecs-gigazine/products/preordina-
 file: "annas-arch-1028a5e42eb5.pdf"
 cover: "1.jpg"
 date: "2023-07-05"
+goodreads: 193562447-scottecs-gigazine-vol-1
 ---
 
 La nuovissima rivista firmata da Sio, torna con una nuova forma e un nuovo nome! Scottecs Gigazine è più grande, ha più pagine, ha più autori, è più bella e soprattutto più saporita! (Non mangiatela per favore)

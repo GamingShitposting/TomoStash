@@ -4,6 +4,7 @@ webpage: "https://gigaciao.com/collections/scottecs-gigazine/products/scottecs-g
 file: "annas-arch-eee2dd46ee7c.pdf"
 cover: "3.jpg"
 date: "2023-09-02"
+goodreads: 199062160-scottecs-gigazine-vol-3
 ---
 
 Eccolo, il numero 3 di Scottecs Gigazine! Questo è un fumetto che abbiamo fortemente voluto inserire nel nostro catalogo editoriale, in quanto opera dal gusto classico e di raffinata cultura, ma principalmente perché altrimenti avremmo saltato un mese di pubblicazione e uscire poi col numero 4, senza il 3, sarebbe stato un casino. Vi immaginate? Pensate a quante persone confuse ci avrebbero chiesto "E il 3 non esce?".

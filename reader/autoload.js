@@ -27,6 +27,8 @@ if (tome.file) {
     });
 }
 
+articleEl.innerHTML += '<span class="h2">Embed link</span><code>' + location.protocol + '//' + location.host + '{{ "/reader/" | prepend: site.baseurl }}#/' + tome.locale + '/' + tome.slug + '</code>';
+
 asideEl.insertBefore(Object.assign(document.createElement('li'), {
     innerHTML: '<iframe src="{{ "/reader/" | prepend: site.baseurl }}#' + encodeURIComponent(json) + '" style="width: 100%; height: 90vh; border: none; position: relative; z-index: 1;" allow="fullscreen" allowfullscreen="allowfullscreen"></iframe>',
 }), asideEl.children[0]);

@@ -10,20 +10,17 @@ var tome = JSON.parse(json);
 var id = (tome.folder ? tome.slug.split('/')[0] : tome.slug);
 
 if (tome.file) {
-    articleEl.innerHTML += '<span class="h2">Download tome</span><ul><li><button>' + tome.file + '</button></li></ul>';
-    articleEl.querySelector('button').addEventListener('click', function(){
-        location.href = tome.config.store + '/tomes/' + id + '/' + tome.folder + '/' + tome.file;
-    });
+    articleEl.innerHTML += '<span class="h2">Download tome</span><ul><li><a target="_blank">' + tome.file + '</a></li></ul>';
+    articleEl.querySelector('ul > li > a').href = tome.config.store + '/tomes/' + id + '/' + tome.folder + '/' + tome.file;
 } else if (tome.chapters) {
     var chapters = '';
+    articleEl.innerHTML += '<span class="h2">Download chapters</span><ul></ul>';
     tome.chapters.forEach(function(chapter){
-        chapters += '<li><button>' + chapter + '</button></li>';
+        chapters += '<li><a target="_blank">' + chapter + '</a></li>';
     });
     articleEl.innerHTML += '<span class="h2">Download chapters</span><ul>' + chapters + '</ul>';
-    articleEl.querySelectorAll('button').forEach(function(button){
-        button.addEventListener('click', function(){
-            location.href = tome.config.store + '/tomes/' + id + '/' + tome.folder + '/' + button.textContent;
-        });
+    articleEl.querySelectorAll('ul > li > a').forEach(function(link){
+        link.href = tome.config.store + '/tomes/' + id + '/' + tome.folder + '/' + link.textContent;
     });
 }
 

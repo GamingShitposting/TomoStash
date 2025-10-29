@@ -13,18 +13,25 @@ p { margin: 1em; }
     document.body.innerHTML = '';
 
     if (payload[0] === '/') {
-        fetch('../' + payload).then(function(res){
+        var tokens = payload.split('#');
+        var extra = tokens[1];
+        payload = tokens[0];
+
+        if (!payload.endsWith('/')) {
+            payload += '/';
+        }
+        fetch('..' + payload).then(function(res){
             res.text().then(function(html){
                 var dom = (new DOMParser()).parseFromString(html, 'text/html');
                 var json = dom.querySelector('script[type="application/json"][id="tome"]').innerHTML;
-                load(json);
+                load(json, extra);
             });
         });
     } else {
         load(payload);
     }
 
-    function load(json) {
+    function load(json, chapter) {
         var tome = JSON.parse(json);
         var store = tome.config.store;
 
@@ -37,7 +44,7 @@ p { margin: 1em; }
             // foliate: "https://johnfactotum.github.io/foliate-js/reader.html?url=",
         };
 
-        if (tome.chapters) {
+        if (tome.chapters && !chapter) {
             document.body.innerHTML +=
                 '<style>iframe{ height: calc(100% - 32px); }</style>' +
                 '<div style="height: 32px; background-color: darkgray; padding-left: 4px; padding-right: 4px;"><label><select style="margin: 4px;"></select></label></div>';
@@ -51,14 +58,18 @@ p { margin: 1em; }
         if (tome.file) {
             displayVolume(tome.file);
         } else if (tome.chapters) {
-            var select = document.body.querySelector('select');
-            tome.chapters.forEach(function(chapter){
-                select.appendChild(Object.assign(document.createElement('option'), { textContent: chapter }));
-            });
-            select.addEventListener('change', function(){
+            if (!chapter) {
+                var select = document.body.querySelector('select');
+                tome.chapters.forEach(function(chapter){
+                    select.appendChild(Object.assign(document.createElement('option'), { textContent: chapter }));
+                });
+                select.addEventListener('change', function(){
+                    displayVolume(select.value);
+                });
                 displayVolume(select.value);
-            });
-            displayVolume(select.value);
+            } else {
+                displayVolume(chapter);
+            }
         } else {
             return document.body.innerHTML += '<p>No online reading available for this tome, please check downloads.</p>';
         }

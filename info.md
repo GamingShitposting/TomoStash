@@ -1,6 +1,7 @@
 ---
 layout: "index"
 title: "Info"
+permalink: /info/
 ---
 
 More information about the project can be found on the GitHub repository, linked below. We welcome all open-source contributions, from library additions to technical improvements.
@@ -9,5 +10,5 @@ More information about the project can be found on the GitHub repository, linked
 
 We also provide APIs for use of our library in your own website or application, completely for free.
 
-* Embed reader (IFrame): `/reader/#/{locale}/{tome}/[volume]`
+* Embed reader (IFrame): `/reader/#/{locale}/{tome}/[volume]#[chapter]`
 * List of the entire library: `GET` [`/tomes.json`](../tomes.json)

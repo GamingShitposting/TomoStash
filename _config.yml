@@ -1,6 +1,6 @@
 name: "TomoStash"
-tagline: "Pineapple-Certfied Online Digital Tomes Library"
-description: "Pineapple-Certfied Online Digital Tomes Library"
+tagline: "Pineapple-Certfied Online Digital Tomes Library - Books & Comics With All Juice & No Tears"
+description: "Pineapple-Certfied Online Digital Tomes Library - Books & Comics With All Juice & No Tears"
 #keywords: "Pineapple, Pineapple Pizza, Pineapple House"
 #email: "pineapple@example.com"
 #linkedin: "https://www.linkedin.com/"
@@ -28,3 +28,5 @@ defaults:
 
 extra:
   store: "https://gamingshitposting.github.io/docs-bin-1"
+  stores:
+    1: https://gamingshitposting.github.io/docs-bin-1

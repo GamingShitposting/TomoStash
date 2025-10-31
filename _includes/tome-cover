@@ -1,9 +1,18 @@
-{%- capture prefix -%}{{ site.extra.store }}/tomes{%- endcapture -%}
+{%- capture coverstore -%}
+    {%- if include.store -%}
+        {{- site.extra.stores[include.store] -}}
+    {%- else -%}
+        {{- site.extra.store -}}
+    {%- endif -%}
+{%- endcapture -%}
+{%- capture prefix -%}{{- coverstore -}}/tomes{%- endcapture -%}
 {%- if include.tome -%}
-{%- assign tome = include.tome -%}
-{%- capture id %}{%- include tome-id tome=tome -%}{%- endcapture -%}
-{%- capture folder %}{%- include tome-field tome=tome field='folder' -%}{%- endcapture -%}
-{{ prefix }}/{% if folder != '' %}{{ id | split: '/' | first }}{% else %}{{ id }}{% endif %}/{{ tome.cover }}
+    {%- assign tome = include.tome -%}
+    {%- capture id %}{%- include tome-id tome=tome -%}{%- endcapture -%}
+    {%- capture folder %}{%- include tome-field tome=tome field='folder' -%}{%- endcapture -%}
+    {%- capture coverstore2 %}{%- include tome-field tome=tome field='store' -%}{%- endcapture -%}
+    {%- capture prefix_bak -%}{%- if coverstore -%}{{- site.extra.stores[coverstore2] -}}{% else %}{{- site.extra.store -}}{%- endif -%}/tomes{%- endcapture -%}
+    {{- prefix -}}/{% if folder != '' %}{{ id | split: '/' | first }}{% else %}{{ id }}{% endif %}/{{ tome.cover }}
 {%- else -%}
-{{ prefix }}
+    {{- prefix -}}
 {%- endif -%}

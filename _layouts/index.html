@@ -81,12 +81,12 @@
 								{%- assign parts = tome-id | split: '/' -%}
 								{%- assign cover2 = tome.cover2 | strip -%}
 								{%- if parts[1] == 'index' and cover2 != '' -%}
-								<img src="{%- include tome-cover -%}/{{ parts[0] }}/{{ tome.cover }}" style="clip-path: polygon(0 0, 100% 0, 0 100%);" />
-								<img src="{%- include tome-cover -%}/{{ parts[0] }}/{{ cover2 }}" style="clip-path: polygon(100% 100%, 100% 0, 0 100%); position: absolute; top: 0; left: 0;" />
+								<img src="{%- include tome-cover store=tome.store -%}/{{ parts[0] }}/{{ tome.cover }}" style="clip-path: polygon(0 0, 100% 0, 0 100%);" loading="lazy" />
+								<img src="{%- include tome-cover store=tome.store -%}/{{ parts[0] }}/{{ cover2 }}" style="clip-path: polygon(100% 100%, 100% 0, 0 100%); position: absolute; top: 0; left: 0;" loading="lazy" />
 								{% elsif this-id == '' %}
-								<img src="{%- include tome-cover -%}/{{ parts[0] }}/{{ tome.cover }}" alt="{{ tome.title }}" />
+								<img src="{%- include tome-cover store=tome.store -%}/{{ parts[0] }}/{{ tome.cover }}" alt="{{ tome.title }}" loading="lazy" />
 								{% else %}
-								<img src="{%- include tome-cover tome=page -%}" alt="{{ tome.title }}" />
+								<img src="{%- include tome-cover tome=page -%}" alt="{{ tome.title }}" loading="lazy" />
 								{% endif %}
 							</div>
 							<span class="h2">{{ tome.type }}</span>

@@ -1,22 +1,42 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <style>
 html, body, iframe { width: 100%; height: 100%; margin: 0; padding: 0; overflow: hidden; border: none; background-color: white; }
 p { margin: 1em; }
+.bar { background-color: darkgray; padding-left: 4px; padding-right: 4px; overflow: hidden; }
+.bar > a { margin-right: 4px; color: black; float: right; max-width: 40%; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; }
+.bar > label > * { margin: 4px; }
+.bar > label > button { min-width: 3em; }
 </style>
 </head>
 <body>
 <noscript><p>This application requires JavaScript.</p></noscript>
 <script>
 (function(payload){
+    var siteUrl = 'https://gamingshitposting.github.io/TomoStash/';
+    var barHeight = '40px';
+    var itemsHeight = '32px';
+
+    var tokens = payload.split('#');
+    var extra = tokens[1];
+    payload = tokens[0];
     document.body.innerHTML = '';
 
-    if (payload[0] === '/') {
-        var tokens = payload.split('#');
-        var extra = tokens[1];
-        payload = tokens[0];
+    if (extra) {
+        try {
+            extra = JSON.parse(extra);
+        } catch (e) {
+            extra = { chapter: extra };
+            console.error(e);
+        }
+    } else {
+        extra = {};
+    }
 
+    if (payload[0] === '/') {
         if (!payload.endsWith('/')) {
             payload += '/';
         }
@@ -28,58 +48,86 @@ p { margin: 1em; }
             });
         });
     } else {
-        load(payload);
+        load(payload, extra);
     }
 
-    function load(json, chapter) {
+    function load(json, extra) {
         var tome = JSON.parse(json);
-        var store = tome.config.store;
+        var sysStore = tome.config.store;
+        var tomeStore = tome.store ? tome.config.stores[tome.store] : sysStore;
 
         var readers = {
-            villain: store + "/Villain-gh-pages/#/reader?src=",
-            // villain: "../Villain-gh-pages/#/reader?src=",
-            // villain: "https://villain.js.org/#/reader?src=",
-            foliate: store + "/foliate-js-main/reader.html?url=",
-            // foliate: "../foliate-js-main/reader.html?url=",
-            // foliate: "https://johnfactotum.github.io/foliate-js/reader.html?url=",
+            villain: sysStore + "/Villain-gh-pages/#/reader?src=",
+            foliate: sysStore + "/foliate-js-main/reader.html?url=",
         };
 
-        if (tome.chapters && !chapter) {
-            document.body.innerHTML +=
-                '<style>iframe{ height: calc(100% - 32px); }</style>' +
-                '<div style="height: 32px; background-color: darkgray; padding-left: 4px; padding-right: 4px;"><label><select style="margin: 4px;"></select></label></div>';
-        }
+        var barExtra = (tome.chapters && (!extra.chapter || extra.showChapters) ?
+            '<label><select name="chapter" title="Chapter"></select></label>' +
+        '' : '');
+
+        document.body.innerHTML +=
+            '<style>'+
+                'iframe { height: calc(100% - ' + barHeight + '); }' +
+                '.bar { height: ' + barHeight + '; }' +
+                '.bar > label > * { height: ' + itemsHeight + '; }' +
+                '.bar > a { line-height: ' + barHeight + '; }' +
+            '</style>' +
+            '<div class="bar">' +
+                barExtra +
+                '<label><button name="reload" title="Reload">🔄</button></label>' +
+                '<label><button name="fullscreen" title="Fullscreen">↔️</button></label>' +
+                '<a href="' + siteUrl + '" target="_blank" ' + (!checkExternalSite() ? 'hidden' : '') + '>Powered by TomoStash</a>' +
+            '</div>';
 
         document.body.innerHTML += '<iframe allow="fullscreen" allowfullscreen="allowfullscreen"></iframe>';
-        // if (runtime === readers.foliate) {
-        //     document.body.innerHTML += '<button style="position: absolute; top: 8px; right: 48px; font-size: large;" onclick="document.body.requestFullscreen();">↔</button>';
-        // }
+
+        var reloadButton = document.body.querySelector('button[name="reload"]');
 
         if (tome.file) {
+            reloadButton.addEventListener('click', function(){ displayVolume(tome.file); });
             displayVolume(tome.file);
         } else if (tome.chapters) {
-            if (!chapter) {
-                var select = document.body.querySelector('select');
-                tome.chapters.forEach(function(chapter){
-                    select.appendChild(Object.assign(document.createElement('option'), { textContent: chapter }));
-                });
-                select.addEventListener('change', function(){
-                    displayVolume(select.value);
-                });
-                displayVolume(select.value);
+            if (extra.chapter && !extra.showChapters) {
+                reloadButton.addEventListener('click', function(){ displayVolume(extra.chapter); });
+                displayVolume(extra.chapter);
             } else {
-                displayVolume(chapter);
+                var select = document.body.querySelector('select[name="chapter"]');
+                function displayChapter(){
+                    displayVolume(select.value);
+                }
+                tome.chapters.forEach(function(chapter){
+                    select.appendChild(Object.assign(document.createElement('option'), { textContent: chapter, selected: chapter === extra.chapter }));
+                });
+                select.addEventListener('change', displayChapter);
+                reloadButton.addEventListener('click', displayChapter);
+                displayVolume(select.value);
             }
         } else {
             return document.body.innerHTML += '<p>No online reading available for this tome, please check downloads.</p>';
         }
+
+        document.body.querySelector('button[name="fullscreen"]').addEventListener('click', function(){ document.body.requestFullscreen(); });
 
         function displayVolume(file) {
             var ext = file.split('.').slice(-1)[0];
             var runtime = {
                 cbz: readers.villain,
             }[ext] || readers.foliate;
-            document.querySelector('iframe').src = runtime + store + '/tomes/' + (tome.folder ? tome.slug.split('/')[0] : tome.slug) + '/' + tome.folder + '/' + file;
+            document.querySelector('iframe').src = '';
+            setTimeout(function(){
+                document.querySelector('iframe').src = runtime + tomeStore + '/tomes/' + (tome.folder ? tome.slug.split('/')[0] : tome.slug) + '/' + tome.folder + '/' + file;
+            }, 10);
+        }
+    }
+
+    function checkExternalSite() {
+        try {
+            return (location.hostname === 'localhost'
+                ? false
+                : !window.top.location.href.startsWith(siteUrl));
+        } catch (e) {
+            console.error(e);
+            return true;
         }
     }
 })(decodeURIComponent(location.hash.slice(1)).trim());
